@@ -1,6 +1,6 @@
 {
   "name": "flowplus",
-  "version": "2.11.4",
+  "version": "2.11.5",
   "description": "FlowPlus",
   "main": "src/flowplus.js",
   "scripts": {

@@ -65,7 +65,7 @@ module.exports = function(grunt) {
         },
         // global config for SauceLabs
         sauceLabs: {
-          testName: 'flow.js',
+          testName: 'flowplus.js',
           username: grunt.option('sauce-username') || process.env.SAUCE_USERNAME,
           accessKey: grunt.option('sauce-access-key') || process.env.SAUCE_ACCESS_KEY,
           tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
           }
         },
         'files': {
-          'dist/flow.js': ['dist/flow.js']
+          'dist/flowplus.js': ['dist/flowplus.js']
         }
       }
     }

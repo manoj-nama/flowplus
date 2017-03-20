@@ -7,15 +7,15 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= pkg.version %> */\n'
       },
       build: {
-        src: 'dist/flow.js',
-        dest: 'dist/flow.min.js'
+        src: 'dist/flowplus.js',
+        dest: 'dist/flowplus.min.js'
       }
     },
     concat: {
       build: {
         files: {
-          'dist/flow.js': [
-            'src/flow.js'
+          'dist/flowplus.js': [
+            'src/flowplus.js'
           ]
         }
       }
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 
         },
         files: {
-          "dist/flow.js": ["dist/flow.js"]
+          "dist/flowplus.js": ["dist/flowplus.js"]
         }
       }
     },

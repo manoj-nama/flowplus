@@ -1,6 +1,6 @@
 {
-  "name": "flow.js",
-  "main": "./dist/flow.js",
+  "name": "flowplus",
+  "main": "./dist/flowplus.js",
   "ignore": [
     "**/.*",
     "node_modules",

@@ -1619,7 +1619,7 @@
    * Library version
    * @type {string}
    */
-  Flow.version = '2.11.3';
+  Flow.version = '<%= version %>';
 
   if ( typeof module === "object" && module && typeof module.exports === "object" ) {
     // Expose Flow as module.exports in loaders that implement the Node

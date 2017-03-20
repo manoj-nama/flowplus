@@ -1,8 +1,8 @@
 {
   "name": "flowplus",
-  "version": "2.11.3",
+  "version": "2.11.4",
   "description": "FlowPlus",
-  "main": "src/flow.js",
+  "main": "src/flowplus.js",
   "scripts": {
     "test": "grunt test",
     "build": "grunt build",

@@ -90,7 +90,7 @@
       uploadMethod: 'POST',
       prioritizeFirstAndLastChunk: false,
       allowDuplicateUploads: false,
-      target: '/',
+      target: '/',      
       testChunks: true,
       generateUniqueIdentifier: null,
       maxChunkRetries: 0,
@@ -685,11 +685,6 @@
     }
   };
 
-
-
-
-
-
   /**
    * FlowFile class
    * @name FlowFile
@@ -1176,6 +1171,8 @@
      * @type {XMLHttpRequest}
      */
     this.xhr = null;
+    
+    this.chunkInfo = null;
 
     var $ = this;
 
@@ -1301,10 +1298,14 @@
      * Finish preprocess state
      * @function
      */
-    preprocessFinished: function () {
+    preprocessFinished: function (chunkInfo) {
       // Re-compute the endByte after the preprocess function to allow an
       // implementer of preprocess to set the fileObj size
       this.endByte = this.computeEndByte();
+      
+      if(chunkInfo) {
+        this.chunkInfo = chunkInfo;
+      }
 
       this.preprocessState = 2;
       this.send();
@@ -1363,7 +1364,11 @@
 
       var uploadMethod = evalOpts(this.flowObj.opts.uploadMethod, this.fileObj, this);
       var data = this.prepareXhrRequest(uploadMethod, false, this.flowObj.opts.method, this.bytes);
-      this.xhr.send(data);
+      if(!this.chunkInfo) {
+        console.log("No signing info found, returning and waiting for it to be fetched");
+        return;
+      }
+      this.xhr.send(data.blob);
     },
 
     /**
@@ -1465,12 +1470,15 @@
      * @param {Blob} [blob] to send
      * @returns {FormData|Blob|Null} data to send
      */
-    prepareXhrRequest: function(method, isTest, paramsMethod, blob) {
+    prepareXhrRequest: function(method, isTest, paramsMethod, blob) {      
+      var opts = this.chunkInfo;
+      
       // Add data from the query options
       var query = evalOpts(this.flowObj.opts.query, this.fileObj, this, isTest);
       query = extend(query, this.getParams());
 
-      var target = evalOpts(this.flowObj.opts.target, this.fileObj, this, isTest);
+      var url = opts && opts.endpoint || this.flowObj.opts.target;
+      var target = evalOpts(url, this.fileObj, this, isTest);
       var data = null;
       if (method === 'GET' || paramsMethod === 'octet') {
         // Add data from the query options
@@ -1497,6 +1505,13 @@
         this.xhr.setRequestHeader(k, v);
       }, this);
 
+      if(opts && opts.headers) {
+        // Add data from signed header options
+        each(evalOpts(opts.headers, this.fileObj, this, isTest), function (v, k) {
+          this.xhr.setRequestHeader(k, v);
+        }, this);
+      }
+      data.blob = blob;
       return data;
     }
   };
